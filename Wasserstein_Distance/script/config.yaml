@@ -10,7 +10,7 @@ ncircle3:
     opt_type: Adam
     act: lrelu
     slope: 0.1
-ncircle/dim6:
+ncircle6:
     lr: 0.001
     wd: 0.00005 # 0.00005
     factor: 0.5
@@ -63,7 +63,7 @@ rna:
     wd: 0.00001
     factor: 0.5
     seed: 1
-    batch_size: 16
+    batch_size: 32
     embed_size: 200
     num_layer: 5
     use_bn: True

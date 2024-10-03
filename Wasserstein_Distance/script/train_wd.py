@@ -107,14 +107,15 @@ def train_wd(set_type):
     val_loss_gen,_ = validation_loss(model=shared_model, val_dataset=val_dataset, device='cuda')
     print(f"The test loss on the out of disterbution is {val_loss_gen.item()}")
     print(path_to_model)
+    print(config)
 
 
 parser = argparse.ArgumentParser(description="Process dataset with a specified radius.")
 
 # Add dataset_name as a string argument (positional)
-parser.add_argument('--dataset_type', type=str, help='Name of the dataset',default='ncircle3')
+parser.add_argument('--dataset_name', type=str, help='Name of the dataset')
 
 # Parse the arguments
 args = parser.parse_args()
 
-train_wd(set_type=args.dataset_type)
+train_wd(set_type=args.dataset_name)
