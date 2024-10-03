@@ -20,6 +20,7 @@ After downloading, run the following command:
 ```bash
 python generate_datasets.py --dataset_name set_name
 ```
+## Training
 After downloading the data, please run the following command to start the training process:
 ```bash
 python train_wd.py --dataset_name set_name
