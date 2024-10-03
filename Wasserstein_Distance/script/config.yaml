@@ -1,0 +1,72 @@
+ncircle3:
+    lr: 0.0001
+    wd: 0.00005
+    factor: 0.5
+    seed: 3
+    batch_size: 32
+    embed_size: 250
+    num_layer: 5
+    use_bn: True
+    opt_type: Adam
+    act: lrelu
+    slope: 0.1
+ncircle/dim6:
+    lr: 0.001
+    wd: 0.00005 # 0.00005
+    factor: 0.5
+    seed: 1
+    batch_size: 32
+    embed_size: 250
+    num_layer: 5
+    opt_type: Adam
+    act: lrelu
+    use_bn: True
+    slope: 0.05
+random:
+    lr: 0.0001
+    wd: 0.00001
+    factor: 0.7
+    seed: 1
+    batch_size: 16
+    embed_size: 200
+    num_layer: 5
+    use_bn: False
+    slope: 0.05
+    opt_type: Adam
+    act: lrelu
+mn_small:
+    lr: 0.0001
+    opt_type: Adam
+    slope: 0.1
+    wd: 0.00005
+    factor: 0.5
+    seed: 1
+    batch_size: 8
+    embed_size: 200
+    num_layer: 5
+    use_bn: True
+    act: lrelu
+mn_large:
+    lr: 0.0001
+    wd: 0.00001
+    factor: 0.5
+    seed: 1
+    batch_size: 16
+    embed_size: 200
+    num_layer: 5
+    use_bn: True
+    act: lrelu
+    slope: 0.1
+    opt_type: Adam
+rna:
+    lr: 0.0001
+    wd: 0.00001
+    factor: 0.5
+    seed: 1
+    batch_size: 16
+    embed_size: 200
+    num_layer: 5
+    use_bn: True
+    opt_type: Adam
+    act: lrelu
+    slope: 0.05
