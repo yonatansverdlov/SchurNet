@@ -8,10 +8,7 @@ conda env create -f environment.yml
 conda activate Wasserstein-env
 ```
 ## Data
-sets.py --dataset_name set_name
-```
-
-please Download the datasets from https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX .
+Please download the datasets from https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX .
 ## Training
 Choose one of the datasets of ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna named set_name.
 After downloading the data, please run the following command to start the training process:
