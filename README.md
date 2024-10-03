@@ -4,7 +4,7 @@
 This folder contains the code for Wessarstein Distance computation, which is part of the larger project. To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
 
 ```bash
-conda env create -f environment.yml
+conda env create -f dependencies.yml
 conda activate Wasserstein-env
 ```
 ## Data
