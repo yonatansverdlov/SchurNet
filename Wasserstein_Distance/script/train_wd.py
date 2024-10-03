@@ -66,7 +66,6 @@ def train_wd(set_type):
     embedding_size = phi_params['output']
     modelname = 'try_shared'
     max_iter = 40
-    shared = True
     device = 'cuda'
     factor = config.factor
     lr = config.lr
@@ -106,9 +105,7 @@ def train_wd(set_type):
     train_dataset, val_dataset = return_dataset(set_type=set_type,small = False)
     val_loss_gen,_ = validation_loss(model=shared_model, val_dataset=val_dataset, device='cuda')
     print(f"The test loss on the out of disterbution is {val_loss_gen.item()}")
-    print(path_to_model)
     print(config)
-
 
 parser = argparse.ArgumentParser(description="Process dataset with a specified radius.")
 

@@ -67,6 +67,6 @@ rna:
     embed_size: 200
     num_layer: 5
     use_bn: True
-    opt_type: Adam
+    opt_type: AdamW
     act: lrelu
-    slope: 0.05
+    slope: 0.1
