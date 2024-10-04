@@ -21,10 +21,10 @@ python train_wd.py --dataset_name set_name
 conda create --name deep-align python=3.9
 conda activate deep-align
 conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
-```
 
-cd deep-align
-pip install -e DWS
+cd DWS
+pip install -e
+```
 
 ## MNIST MLP
 To run the MLP experiments, first download the data:
