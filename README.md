@@ -42,7 +42,8 @@ unzip -q cifar_classifiers.zip -d datasets
 ```
 ## Split data:
 ```bash
-python experiments/utils/data/generate_splits.py
+Choose set_type in mnist, cifar 
+python experiments/utils/data/generate_splits.py --set_type set_type
 ```
 ## Training
 Choose set_type mnist or cifar
