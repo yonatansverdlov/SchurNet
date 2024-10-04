@@ -48,8 +48,7 @@ python experiments/utils/data/generate_splits.py --set_type set_type
 ## Training
 Choose set_type mnist or cifar
 ```bash
-cd experiments/mlp_image_classifier
-python trainer.py --set_type
+python experiments/mlp_image_classifier/trainer.py --set_type
 ```
 
 
