@@ -25,6 +25,8 @@ conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=
 cd DWS
 pip install -e .
 ```
+## Data
+Choose set_type to be mnist/cifar.
 
 ## MNIST MLP
 To run the MLP experiments, first download the data:
@@ -41,16 +43,12 @@ wget "https://www.dropbox.com/s/sv85hrjswaspok4/cifar_classifiers.zip"
 unzip -q cifar_classifiers.zip -d datasets
 ```
 ## Split data:
+Run
 ```bash
-Choose set_type in mnist, cifar 
 python experiments/utils/data/generate_splits.py --set_type set_type
 ```
 ## Training
-Choose set_type mnist or cifar
+Run
 ```bash
 python experiments/mlp_image_classifier/trainer.py --set_type
 ```
-
-
-
-
