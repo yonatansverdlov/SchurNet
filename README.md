@@ -29,14 +29,14 @@ pip install -e .
 ## MNIST MLP
 To run the MLP experiments, first download the data:
 ```bash
-mkdir datasets
+mkdir -p datasets
 wget "https://www.dropbox.com/s/sv85hrjswaspok4/mnist_classifiers.zip"
 unzip -q mnist_classifiers.zip -d datasets
 ```
 ## CIFAR10 MLP
 To run the MLP experiments, first download the data:
 ```bash
-mkdir datasets
+mkdir -p datasets
 wget "https://www.dropbox.com/s/sv85hrjswaspok4/cifar_classifiers.zip"
 unzip -q cifar_classifiers.zip -d datasets
 ```
