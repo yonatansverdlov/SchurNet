@@ -15,5 +15,45 @@ After downloading the data, please run the following command to start the traini
 ```bash
 python train_wd.py --dataset_name set_name
 ```
+## Deep Weight Space Alignment
+## Installation
+```bash
+conda create --name deep-align python=3.9
+conda activate deep-align
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
 
+cd DWS
+pip install -e .
+```
+## Data
+Choose set_type to be mnist/cifar.
 
+## MNIST MLP
+To run the MLP experiments, first download the data:
+```bash
+mkdir -p datasets
+wget "https://www.dropbox.com/s/sv85hrjswaspok4/mnist_classifiers.zip" -P data/datasets
+unzip -q data/datasets/mnist_classifiers.zip -d data/datasets/samples
+
+```
+## CIFAR10 MLP
+To run the MLP experiments, first download the data:
+```bash
+mkdir -p datasets
+wget "https://www.dropbox.com/s/sv85hrjswaspok4/cifar_classifiers.zip" -P data/datasets
+unzip -q data/datasets/cifar_classifiers.zip -d data/datasets/samples
+```
+## Split data:
+Run
+```bash
+python experiments/utils/data/generate_splits.py --set_type set_type
+```
+## Training
+For our model with the shared layers run:
+```bash
+python experiments/mlp_image_classifier/trainer.py --set_type --shared True
+```
+For the baseline of Siamese model, run:
+```bash
+python experiments/mlp_image_classifier/trainer.py --set_type --shared False
+```
