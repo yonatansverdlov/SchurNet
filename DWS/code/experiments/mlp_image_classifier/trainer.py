@@ -200,9 +200,9 @@ def main(
         pin_memory=True,
     )
     # todo: add image args to argparse
-    get_loaders = dict(mnist=get_mnist_dataloaders, cifar10=get_cifar10_dataloaders)[args.data_name]
+    get_loaders = dict(mnist=get_mnist_dataloaders, cifar10=get_cifar10_dataloaders)[args.set_type]
     train_image_loader, val_image_loader, test_image_loader = get_loaders(
-        args.image_data_path, batch_size=args.image_batch_size
+        args.imgs_path, batch_size=args.image_batch_size
     )
 
     logging.info(
@@ -417,26 +417,21 @@ def main(
 
 
 if __name__ == "__main__":
-    path_to_proj = Path(__file__).resolve()
-    parent_directory = path_to_proj.parent.parent.parent
-    set_type = 'mnist'
-    data_path = f'{parent_directory}/data/datasets/{set_type}_splits.json'
-    imgs_path = f'{parent_directory}/data/datasets/{set_type}_images'
+    # path_to_proj = Path(__file__).resolve()
+    # parent_directory = path_to_proj.parent.parent.parent
+    # set_type = 'mnist'
+    # data_path = f'{parent_directory}/data/datasets/{set_type}_splits.json'
+    # imgs_path = f'{parent_directory}/data/datasets/{set_type}_images'
     parser = ArgumentParser("DEEP-ALIGN MLP matching trainer", parents=[common_parser])
     parser.set_defaults(
-        data_path=data_path,
+        # data_path=data_path,
         lr=0.001,
         n_epochs=100,
         batch_size=8,
-        add_common = True,
         wd = 1e-5
     )
-    parser.add_argument(
-        "--image-data-path",
-        type=str,
-        help="image data path",
-        default=imgs_path
-    )
+    parser.add_argument("--set_type",type=str)
+
     parser.add_argument(
         "--image-batch-size",
         type=int,
@@ -464,13 +459,6 @@ if __name__ == "__main__":
         choices=["adam", "sgd", "adamw"],
         help="optimizer",
     )
-    parser.add_argument(
-        "--data-name",
-        type=str,
-        default=set_type,
-        choices=["mnist", "cifar10"],
-        help="dataset to use",
-    )
     parser.add_argument("--num-workers", type=int, default=5, help="num workers")
     parser.add_argument(
         "--reduction",
@@ -482,7 +470,7 @@ if __name__ == "__main__":
     parser.add_argument(
     "--common_reduction",
     type=str,
-    default="max", # mean.
+    default="max", 
     choices=["mean", "sum", "max", "attn"],
     help="reduction strategy",
     )
@@ -590,8 +578,35 @@ if __name__ == "__main__":
         default=20,
         help="Num. Sink steps",
     )
+    parser.add_argument(
+        "--shared",
+        type=bool,required=True
+        
+    )
     args = parser.parse_args()
-
+    shared = args.shared
+    if shared:
+        if args.set_type == 'mnist':
+            lr = 0.0005
+            wd = 1e-4
+            dim_hidden = 64
+        else:
+            lr = 0.0005
+            wd = 1e-5
+            dim_hidden = 32
+    else:
+        if args.set_type == 'mnist':
+            lr = 0.0005
+            wd = 1e-5
+            dim_hidden = 64
+        else:
+            lr = 1e-3
+            wd = 1e-5
+            dim_hidden = 32
+    args.lr = lr
+    args.wd = wd
+    args.dim_hidden = dim_hidden
+    assert args.set_type in ['mnist','cifar']
     # set seed
     set_seed(args.seed)
     # wandb
@@ -609,10 +624,12 @@ if __name__ == "__main__":
 
     device = get_device(gpus=args.gpu)
 
-    logging.info(f"Using {args.data_name} dataset")
-    image_flatten_size = dict(mnist=28 * 28, cifar10=32 * 32 * 3)[args.data_name]
+    logging.info(f"Using {args.set_type} dataset")
+    image_flatten_size = dict(mnist=28 * 28, cifar10=32 * 32 * 3)[args.set_type]
+    args.data_path = os.path.join("../", "data", "datasets/samples", f"{args.set_type}_models_processed.json")
+    args.imgs_path = os.path.join("../", "data", "datasets/samples", f"{args.set_type}_imgs")
     main(
-        add_common=args.add_common,
+        add_common=args.shared,
         path=args.data_path,
         epochs=args.n_epochs,
         lr=args.lr,

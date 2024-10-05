@@ -94,7 +94,7 @@ def train_wd(set_type):
                                                 opt_type=opt_type,
                                                 slope=slope)
     val_loss_mean, val_loss_std = validation_loss(val_dataset, shared_model, device, image=False)
-    path_to_model =f'../data/models/{dataset_name}'
+    path_to_model =f'../data/models/{dataset_name}/{config}'
     if not os.path.exists(path_to_model):
         os.makedirs(path_to_model)
     path_to_model = os.path.join(path_to_model,f'Model_{val_loss_mean}')
