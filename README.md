@@ -51,9 +51,9 @@ python experiments/utils/data/generate_splits.py --set_type set_type
 ## Training
 For our model with the shared layers run:
 ```bash
-python experiments/mlp_image_classifier/trainer.py --set_type --shared True
+python experiments/mlp_image_classifier/trainer.py --set_type set_type --shared True
 ```
 For the baseline of Siamese model, run:
 ```bash
-python experiments/mlp_image_classifier/trainer.py --set_type --shared False
+python experiments/mlp_image_classifier/trainer.py --set_type set_type --shared False
 ```
