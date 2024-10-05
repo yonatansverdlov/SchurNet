@@ -430,7 +430,7 @@ if __name__ == "__main__":
         batch_size=8,
         wd = 1e-5
     )
-    parser.add_argument("--set_type",type=str)
+    parser.add_argument("--set_type",type=str,default='mnist')
 
     parser.add_argument(
         "--image-batch-size",
@@ -580,7 +580,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--shared",
-        type=bool,required=True
+        type=bool,default=True
         
     )
     args = parser.parse_args()

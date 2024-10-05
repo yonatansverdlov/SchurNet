@@ -12,13 +12,13 @@ ncircle3:
     slope: 0.15 # 0.15
 ncircle6:
     lr: 0.001
-    wd: 0.00001 # 0.00005
+    wd: 0.00005 # 0.00005
     factor: 0.5
     seed: 1
-    batch_size: 16
+    batch_size: 32
     embed_size: 250
     num_layer: 5
-    opt_type: Adam
+    opt_type: AdamW
     act: lrelu
     use_bn: True
     slope: 0.15
