@@ -22,10 +22,10 @@ from deepalign.utils import extract_pred
 from experiments.utils import (
     common_parser, count_parameters, get_device, set_logger, set_seed, str2bool,
 )
-from experiments.utils.data import MultiViewMatchingBatch, MatchingModelsDataset
+from experiments.utils.data_utils import MultiViewMatchingBatch, MatchingModelsDataset
 from deepalign.sinkhorn import matching
 from deepalign import DWSMatching
-from experiments.utils.data.image_data import get_mnist_dataloaders, get_cifar10_dataloaders
+from experiments.utils.data_utils.image_data import get_mnist_dataloaders, get_cifar10_dataloaders
 
 set_logger()
 
@@ -626,8 +626,8 @@ if __name__ == "__main__":
 
     logging.info(f"Using {args.set_type} dataset")
     image_flatten_size = dict(mnist=28 * 28, cifar10=32 * 32 * 3)[args.set_type]
-    args.data_path = os.path.join("../", "data", "datasets/samples", f"{args.set_type}_models_processed.json")
-    args.imgs_path = os.path.join("../", "data", "datasets/samples", f"{args.set_type}_imgs")
+    args.data_path = os.path.join( "data", "datasets/samples", f"{args.set_type}_models_processed.json")
+    args.imgs_path = os.path.join( "data", "datasets/samples", f"{args.set_type}_imgs")
     main(
         add_common=args.shared,
         path=args.data_path,
