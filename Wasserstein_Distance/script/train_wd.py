@@ -110,12 +110,10 @@ def train_wd(set_type):
     print(config)
 
 
-parser = argparse.ArgumentParser(description="Process dataset with a specified radius.")
-
-# Add dataset_name as a string argument (positional)
-parser.add_argument('--dataset_name', type=str, help='Name of the dataset')
-
-# Parse the arguments
-args = parser.parse_args()
-
-train_wd(set_type=args.dataset_name)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Process dataset with a specified radius.")
+    # Add dataset_name as a string argument (positional)
+    parser.add_argument('--dataset_name', type=str, help='Name of the dataset')
+    # Parse the arguments
+    args = parser.parse_args()
+    train_wd(set_type=args.dataset_name)
