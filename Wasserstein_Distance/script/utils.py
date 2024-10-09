@@ -14,8 +14,8 @@ class SetTypes(Enum):
 
     def return_path(self, small=True):
         dataset_name = self.return_dataset_name()
-        train_sf = '../data/samples/{}/train_{}.npz'.format(dataset_name, 'small' if small else 'lrage')
-        val_sf = '../data/samples/{}/val_{}.npz'.format(dataset_name, 'small' if small else 'lrage')
+        train_sf = '../data_for_wd/samples/{}/train_{}.npz'.format(dataset_name, 'small' if small else 'lrage')
+        val_sf = '../data_for_wd/samples/{}/val_{}.npz'.format(dataset_name, 'small' if small else 'lrage')
         return train_sf, val_sf
 
     def return_dim(self):
