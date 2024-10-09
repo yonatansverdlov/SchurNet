@@ -11,7 +11,8 @@ conda env create -f dependencies.yml
 conda activate weis_dis
 ```
 ### Data
-Please download the datasets from https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX.
+Download the datasets from https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX.
+Unzip the downloaded file and place the data in the `Wasserstein_Distance` folder.
 ### Training
 Choose one of the datasets of ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna(RNA) named set_name.
 After downloading the data, please run the following command to start the training process:
