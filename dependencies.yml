@@ -12,3 +12,5 @@ dependencies:
       - easydict
       - h5py
       - tensorboard
+      - pyyaml
+      - tqdm
