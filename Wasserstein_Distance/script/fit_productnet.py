@@ -12,21 +12,22 @@ import argparse
 
 MSELOSS = nn.MSELoss(reduction='mean')
 
-def train_point_productnet(train_dataset: Dataset,val_dataset, dimension: int, initial: dict,
-                           phi: dict, rho: dict, device: str, lr, name: str,factor:float,slope,
-                           activation='relu',  iterations=200,
-                           batch_size=64, batch = True,wd = 0.0,opt_type ='Adam'):
+
+def train_point_productnet(train_dataset: Dataset, val_dataset, dimension: int, initial: dict,
+                           phi: dict, rho: dict, device: str, lr, name: str, factor: float, slope,
+                           activation='relu', iterations=200,
+                           batch_size=64, batch=True, wd=0.0, opt_type='Adam'):
     embedding_size = phi['output']
     best_loss = np.inf
     best_model = None
-    initial['input_dim'] = dimension                            
-    model = SharedProductNet(initial, phi, rho,activation=activation,bn=batch,slope=slope)
+    initial['input_dim'] = dimension
+    model = SharedProductNet(initial, phi, rho, activation=activation, bn=batch, slope=slope)
     model.to(device)
     if opt_type == 'Adam':
-        optimizer = Adam(model.parameters(), lr=lr,weight_decay=wd)
+        optimizer = Adam(model.parameters(), lr=lr, weight_decay=wd)
     else:
-        optimizer = AdamW(model.parameters(), lr=lr,weight_decay=wd)
-    scheduler = ReduceLROnPlateau(optimizer=optimizer,factor=factor,patience=1)
+        optimizer = AdamW(model.parameters(), lr=lr, weight_decay=wd)
+    scheduler = ReduceLROnPlateau(optimizer=optimizer, factor=factor, patience=1)
     epoch_losses = []
     for epoch in trange(iterations):
         optimizer.zero_grad()
@@ -43,8 +44,8 @@ def train_point_productnet(train_dataset: Dataset,val_dataset, dimension: int, i
             if (i != 0 and i % batch_size == 0) or i == len(train_dataset) - 1:
                 optimizer.step()
                 optimizer.zero_grad()
-        
-        val_loss,_ = validation_loss(val_dataset=val_dataset,model=model,device='cuda')
+
+        val_loss, _ = validation_loss(val_dataset=val_dataset, model=model, device='cuda')
         scheduler.step(epoch_loss)
         if val_loss < best_loss:
             best_model = copy.deepcopy(model)
