@@ -1,7 +1,7 @@
 # SchurNet
 
 ### Overview
-This folder contains the code for the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"]().
+This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"]().
 
 ## Wasserstein Distance Computation
 To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
@@ -11,7 +11,7 @@ conda env create -f dependencies.yml
 conda activate weis_dis
 ```
 ### Data
-Download the datasets from https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX.
+Download the datasets from [Here](https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance` folder.
 ### Training
 Choose one of the datasets of ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna(RNA) named set_name.
@@ -28,10 +28,10 @@ conda activate deep-align
 conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
 
 cd DWS
-pip install -e .
+pip install -r requirements.txt
 ```
 ### Data
-Choose set_type to be mnist/cifar.
+Choose set_type to be `mnist` or `cifar`.
 
 ### MNIST MLP
 To run the MLP experiments, first download the data:
