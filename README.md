@@ -51,16 +51,16 @@ unzip -q data/datasets/cifar_classifiers.zip -d data/datasets/samples
 ### Split data:
 Run
 ```bash
-python experiments/utils/data/generate_splits.py --set_type set_type
+python code/experiments/utils/data_utils/generate_splits.py --set_type set_type
 ```
 ### Training
 For our model with the shared layers run:
 ```bash
-python experiments/mlp_image_classifier/trainer.py --set_type set_type --shared True
+python code/experiments/mlp_image_classifier/trainer.py --set_type set_type --shared True
 ```
 For the baseline of Siamese model, run:
 ```bash
-python experiments/mlp_image_classifier/trainer.py --set_type set_type --shared False
+python code/experiments/mlp_image_classifier/trainer.py --set_type set_type --shared False
 ```
 
 ## Citation
