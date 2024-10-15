@@ -1,7 +1,7 @@
 # SchurNet
 
 ### Overview
-This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"]().
+This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"](https://arxiv.org/abs/2410.06665).
 
 ## Wasserstein Distance Computation
 To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
@@ -64,4 +64,14 @@ python code/experiments/mlp_image_classifier/trainer.py --set_type set_type --sh
 ```
 
 ## Citation
-(bibtex of arxiv)
+```
+@misc{sverdlov2024revisiting,
+      title={Revisiting Multi-Permutation Equivariance through the Lens of Irreducible Representations}, 
+      author={Yonatan Sverdlov and Ido Springer and Nadav Dym},
+      year={2024},
+      eprint={2410.06665},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2410.06665}, 
+}
+```
