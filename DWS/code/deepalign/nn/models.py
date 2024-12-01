@@ -4,9 +4,8 @@ from typing import Tuple
 import torch
 from torch import nn
 
-from experiments.utils import count_parameters
-from deepalign.nn.layers import (BN, CannibalLayer, DownSampleCannibalLayer, Dropout,
-                       InvariantLayer, LeakyReLU, ReLU)
+from  utils.utils import count_parameters
+from deepalign.nn.layers import (BN, CannibalLayer, DownSampleCannibalLayer, Dropout,ReLU)
 from deepalign.nn.layers.layers import NormalizeAndScale
 
 

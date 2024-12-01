@@ -3,9 +3,7 @@ from torch import nn
 from torch.nn import functional as F
 
 from deepalign.utils import permute_weights, avg_weights_and_biases
-from deepalign.sinkhorn import Sinkhorn, matching, CLFBatchSinkhorn
-from experiments.mlp_image_classifier.models import FCNet
-
+from deepalign.sinkhorn import Sinkhorn, matching, CLFBatchSinkhorn, FCNet
 
 def get_lmc_loss_and_preds_from_permutations(
         perm, inputs_view_0, inputs_view_1, functional_model, image_batch, device, n_steps=16

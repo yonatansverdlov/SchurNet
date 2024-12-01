@@ -10,7 +10,7 @@ import os
 import torch.nn.functional as F
 from torch.utils.data import Subset
 
-from experiments.utils import make_coordinates
+from utils.utils import make_coordinates
 from deepalign.nn.inr_models import INR
 
 
@@ -330,7 +330,6 @@ class INRDataset(torch.utils.data.Dataset):
     ):
         self.split = split
         self.path = path
-        path = os.path.abspath(path=path)
         self.dataset = json.load(open(path, "r"))[self.split]
 
         self.augmentation = augmentation
