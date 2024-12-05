@@ -19,8 +19,8 @@ def generate_splits(data_root, save_path, val_size=1000, test_size=1000, max_mod
     current_file = Path(__file__)
 
     # Get the parent of the parent directory
-    data_path = os.path.join(str(current_file.parent.parent.parent.parent.parent),data_root)
-    save_path = os.path.join(str(current_file.parent.parent.parent.parent.parent),save_path)
+    data_path = os.path.join(str(current_file.parent.parent.parent.parent),data_root)
+    save_path = os.path.join(str(current_file.parent.parent.parent.parent),save_path)
     data_root = Path(data_path)
     save_path = Path(save_path)
     data_split = defaultdict(list)
@@ -47,7 +47,7 @@ def generate_splits(data_root, save_path, val_size=1000, test_size=1000, max_mod
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--set_type",type=str,default='mnist')
+    parser.add_argument("--set_type",type=str,default='cifar')
     args = parser.parse_args()
     set_type = args.set_type
     args.data_root = os.path.join("data", "datasets/samples", f"{set_type}_models")

@@ -3,8 +3,6 @@ import logging
 from argparse import ArgumentParser
 from pathlib import Path
 import os
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-# sys.path.append('../deepalign')
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -29,7 +27,6 @@ import matplotlib.pyplot as plt
 import logging
 import os
 from argparse import ArgumentParser
-import wandb
 
 set_logger()
 
@@ -214,7 +211,7 @@ def main(args: dict):
     train_loader, val_loader, test_loader = create_data_loaders(train_set, val_set, test_set, args)
 
     # Load image loaders
-    get_loaders = {"mnist": get_mnist_dataloaders, "cifar10": get_cifar10_dataloaders}[args.set_type]
+    get_loaders = {"mnist": get_mnist_dataloaders, "cifar": get_cifar10_dataloaders}[args.set_type]
     train_image_loader, val_image_loader, test_image_loader = get_loaders(
         args.imgs_path, batch_size=args.image_batch_size
     )
@@ -264,10 +261,12 @@ def main(args: dict):
 
     if args.save_model:
         save_model(best_results["model_state"])
+    return test_results
 
 
 def load_datasets(args):
     """Load train, validation, and test datasets."""
+    print("hi")
     return (
         MatchingModelsDataset(args.data_path, split="train", normalize=args.normalize, statistics_path=args.statistics_path),
         MatchingModelsDataset(args.data_path, split="val", normalize=args.normalize, statistics_path=args.statistics_path),
@@ -401,7 +400,7 @@ def configure_parser():
         wd=1e-5,
         add_common=True,
     )
-    parser.add_argument("--set_type", type=str, default="mnist", choices=["mnist", "cifar"], help="Dataset type")
+    parser.add_argument("--set_type", type=str, default="cifar", choices=["mnist", "cifar"], help="Dataset type")
     parser.add_argument("--image-batch-size", type=int, default=32, help="Image batch size")
     parser.add_argument("--loss", type=str, choices=["ce", "mse"], default="ce", help="Loss function for permutations")
     parser.add_argument("--recon-loss", type=str, choices=["l2", "lmc", "both"], default="both", help="Reconstruction loss type")
@@ -435,28 +434,14 @@ def configure_parser():
     parser.add_argument("--shared", type=str2bool, default=True, help="Use shared configuration for settings")
     return parser
 
-def set_hyperparameters(args):
+def set_hyperparameters(args:dict):
     """
     Set hyperparameters based on dataset and shared settings.
     """
-    if args.shared:
-        if args.set_type == "mnist":
-            args.lr = 0.0005
-            args.wd = 1e-4
-            args.dim_hidden = 64
-        else:
-            args.lr = 0.0005
-            args.wd = 1e-5
-            args.dim_hidden = 32
-    else:
-        if args.set_type == "mnist":
-            args.lr = 0.0005
-            args.wd = 1e-5
-            args.dim_hidden = 64
-        else:
-            args.lr = 0.001
-            args.wd = 1e-5
-            args.dim_hidden = 32
+    args.lr = 0.0005 if args.set_type == "mnist" else (0.0005 if args.shared else 0.001)
+    args.wd = 1e-4 if args.shared and args.set_type == "mnist" else 1e-5
+    args.dim_hidden = 64 if args.set_type == "mnist" else 32
+
 
 def configure_wandb(args):
     """
@@ -501,10 +486,14 @@ def main_entry():
     args.imgs_path = os.path.join(data_dir, f"{args.set_type}_imgs")
 
     # Image flatten size based on dataset
-    args.image_flatten_size = {"mnist": 28 * 28, "cifar10": 32 * 32 * 3}[args.set_type]
+    args.image_flatten_size = {"mnist": 28 * 28, "cifar": 32 * 32 * 3}[args.set_type]
 
     # Execute main training and evaluation
-    main(args)
+    return main(args)
 
 if __name__ == "__main__":
-    main_entry()
+    test_results = main_entry()
+    avg_loss = test_results['avg_loss']
+    avg_acc = test_results['avg_acc']
+    recon_loss = test_results['recon_loss']
+    print(f"After training we have avg loss {avg_loss}, avg acc {avg_acc}, recon_loss {recon_loss}")
