@@ -36,13 +36,12 @@ def return_dataset(dataset_name: str, small: bool,device:str):
     return train_dataset, val_dataset
 
 
-def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = False):
+def train_wd(dataset_name: str, check_out_of_dist: bool = False):
     """
     Trains a SharedProductNet model and evaluates its performance.
 
     Args:
         dataset_name (str): Name of the dataset to use for training.
-        seed (int, optional): Random seed for reproducibility. Defaults to the config seed.
         check_out_of_dist (bool, optional): If True, evaluates on out-of-distribution data.
 
     Returns:
@@ -57,8 +56,7 @@ def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = Fals
     config = EasyDict(config)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     # Set random seed
-    if seed is None:
-        seed = config.seed
+    seed = config.seed
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
@@ -123,15 +121,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Train and evaluate the model across multiple seeds
-    num_seeds = 1
-    losses = []
-    for seed in range(num_seeds):
-        val_loss = train_wd(dataset_name=args.dataset_name, seed=None,check_out_of_dist=True)
-        losses.append(val_loss)
-
-    # Aggregate results
-    losses = torch.tensor(losses)
-    best_seed = torch.argmin(losses).item()
-    best_loss = torch.min(losses).item()
-    print(f"Best seed: {best_seed}, Best loss: {best_loss:.4f}")
+    train_wd(dataset_name=args.dataset_name,check_out_of_dist=True)
 
