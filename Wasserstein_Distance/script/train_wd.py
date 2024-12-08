@@ -8,7 +8,7 @@ from codes.utils import WassersteinPairDataset, return_dim, return_path
 from easydict import EasyDict
 
 
-def return_dataset(dataset_name: str, small: bool):
+def return_dataset(dataset_name: str, small: bool,device:str):
     """
     Loads and processes training and validation datasets.
 
@@ -28,11 +28,10 @@ def return_dataset(dataset_name: str, small: bool):
 
     # Convert to WassersteinPairDataset format
     train_dataset = WassersteinPairDataset(
-        train_data['Ps'], train_data['Qs'], torch.tensor(train_data['dists'])
-    )
+        train_data['Ps'], train_data['Qs'], torch.tensor(train_data['dists']),device=device)
+    
     val_dataset = WassersteinPairDataset(
-        val_data['Ps'], val_data['Qs'], torch.tensor(val_data['dists'])
-    )
+        val_data['Ps'], val_data['Qs'], torch.tensor(val_data['dists']),device=device)
 
     return train_dataset, val_dataset
 
@@ -56,7 +55,7 @@ def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = Fals
     with open('codes/config.yaml', 'r') as f:
         config = yaml.safe_load(f)[dataset_name]
     config = EasyDict(config)
-
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     # Set random seed
     if seed is None:
         seed = config.seed
@@ -65,7 +64,7 @@ def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = Fals
         torch.cuda.manual_seed_all(seed)
 
     # Load datasets
-    train_dataset, val_dataset = return_dataset(dataset_name=dataset_name, small=True)
+    train_dataset, val_dataset = return_dataset(dataset_name=dataset_name, small=True,device=device)
 
     # Model parameters
     embed_size = config.embed_size
@@ -73,10 +72,6 @@ def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = Fals
     mlp_params = {'hidden': embed_size, 'output': embed_size, 'layers': num_layer}
     phi_params = {'hidden': embed_size, 'output': embed_size, 'layers': num_layer}
     rho_params = {'hidden': embed_size, 'output': 1, 'layers': num_layer}
-
-    # Training configuration
-    max_iter = 100
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     # Train the model
     shared_model = train_point_productnet(
@@ -88,7 +83,7 @@ def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = Fals
         rho=rho_params,
         device=device,
         lr=config.lr,
-        iterations=max_iter,
+        iterations=config.max_iter,
         batch_size=config.batch_size,
         activation=config.act,
         batch=config.use_bn,
@@ -99,20 +94,17 @@ def train_wd(dataset_name: str, seed: int = None, check_out_of_dist: bool = Fals
     )
 
     # Validate the model
-    val_loss_mean = validation_loss(val_dataset, shared_model, device)
+    val_loss_small = validation_loss(val_dataset, shared_model, device)
     model_dir = f'../data/models/{dataset_name}/{config}'
     os.makedirs(model_dir, exist_ok=True)
-    model_path = os.path.join(model_dir, f'Model_{val_loss_mean:.4f}.pth')
+    model_path = os.path.join(model_dir, f'Model_{val_loss_small:.4f}.pth')
     torch.save(shared_model.state_dict(), model_path)
     print(f"Model saved at {model_path}")
-
-    # Evaluate on small dataset
-    val_loss_small = validation_loss(val_dataset, shared_model, device)
     print(f"The validation loss on the small dataset is {val_loss_small:.4f}")
 
     # Evaluate on out-of-distribution dataset (if applicable)
     if check_out_of_dist:
-        train_dataset, val_dataset = return_dataset(dataset_name=dataset_name, small=False)
+        train_dataset, val_dataset = return_dataset(dataset_name=dataset_name, small=False,device = device)
         val_loss_gen = validation_loss(val_dataset, shared_model, device)
         print(f"The validation loss on the out-of-distribution dataset is {val_loss_gen:.4f}")
 
@@ -131,10 +123,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Train and evaluate the model across multiple seeds
-    num_seeds = 20
+    num_seeds = 1
     losses = []
     for seed in range(num_seeds):
-        val_loss = train_wd(dataset_name=args.dataset_name, seed=seed)
+        val_loss = train_wd(dataset_name=args.dataset_name, seed=None,check_out_of_dist=True)
         losses.append(val_loss)
 
     # Aggregate results

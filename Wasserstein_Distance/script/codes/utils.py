@@ -1,9 +1,7 @@
-from enum import Enum
 from functools import partial
 import torch.nn as nn
 from torch.utils.data import Dataset
-import numpy as np
-
+import torch
 
 def return_path(dataset_name, small=True):
     """
@@ -63,41 +61,19 @@ def return_act(act_name: str, slope: float):
 
 
 class WassersteinPairDataset(Dataset):
-    """
-    PyTorch Dataset class for handling pairs of source and target data along with 
-    their corresponding Earth Mover's Distance (EMD).
-    """
-    def __init__(self, sources, targets, emds):
-        """
-        Initializes the dataset.
-
-        Args:
-            sources (array-like): Array of source samples.
-            targets (array-like): Array of target samples.
-            emds (array-like): Array of Earth Mover's Distances (EMDs) for the pairs.
-        """
-        self.sources = sources
-        self.targets = targets
-        self.emds = emds
+    def __init__(self, sources, targets, emds, device):
+        self.sources = [p.to(dtype=torch.float32, device=device) if isinstance(p, torch.Tensor) else torch.tensor(p, dtype=torch.float32, device=device) for p in sources]
+        self.targets = [p.to(dtype=torch.float32, device=device) if isinstance(p, torch.Tensor) else torch.tensor(p, dtype=torch.float32, device=device) for p in targets]
+        self.emds = [p.to(dtype=torch.float32, device=device) if isinstance(p, torch.Tensor) else torch.tensor(p, dtype=torch.float32, device=device) for p in emds]
+        self.device = device
 
     def __len__(self):
-        """
-        Returns the total number of samples in the dataset.
-
-        Returns:
-            int: Number of samples.
-        """
         return len(self.emds)
 
     def __getitem__(self, idx):
-        """
-        Fetches the data for a specific index.
+        source = self.sources[idx]
+        target = self.targets[idx]
+        emd = self.emds[idx]
+        return source, target, emd
 
-        Args:
-            idx (int): Index of the data point to fetch.
-
-        Returns:
-            tuple: Source sample, target sample, and corresponding EMD.
-        """
-        return self.sources[idx], self.targets[idx], self.emds[idx]
 

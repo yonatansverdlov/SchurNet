@@ -75,12 +75,12 @@ def train_point_productnet(
 
         # Batch training
         for i in trange(len(train_dataset), desc=f"Epoch {epoch + 1}"):
-            input1 = train_dataset[i][0].float().to(device)
-            input2 = train_dataset[i][1].float().to(device)
-            yval = train_dataset[i][2].float().to(device)
+            input1 = train_dataset[i][0]
+            input2 = train_dataset[i][1]
+            yval = train_dataset[i][2]
 
             # Forward pass and loss computation
-            pred, _, _ = model(input1, input2)
+            pred = model(input1, input2)
             yval = torch.unsqueeze(yval, dim=0)
             loss = MSELOSS(pred, yval) / batch_size
             epoch_loss += loss.item()
@@ -92,7 +92,7 @@ def train_point_productnet(
                 optimizer.zero_grad()
 
         # Validation loss and scheduler step
-        val_loss, _ = validation_loss(val_dataset=val_dataset, model=model, device=device)
+        val_loss = validation_loss(val_dataset=val_dataset, model=model, device=device)
         scheduler.step(val_loss)
 
         # Save the best model
@@ -105,7 +105,7 @@ def train_point_productnet(
     return best_model
 
 
-def validation_loss(val_dataset: Dataset, model: SharedProductNet, device: str, image: bool = False):
+def validation_loss(val_dataset: Dataset, model: SharedProductNet, device: str):
     """
     Computes the validation loss for the given dataset.
 
@@ -113,7 +113,6 @@ def validation_loss(val_dataset: Dataset, model: SharedProductNet, device: str, 
         val_dataset (Dataset): Validation dataset.
         model (SharedProductNet): The trained model.
         device (str): Device to run the model on ('cuda' or 'cpu').
-        image (bool): Whether the input data is an image. Default is False.
 
     Returns:
        float: Mean validation loss.
@@ -121,12 +120,11 @@ def validation_loss(val_dataset: Dataset, model: SharedProductNet, device: str, 
     total_loss = []
     with torch.no_grad():
         for i in range(len(val_dataset)):
-            input1 = val_dataset[i][0].to(device)
-            input2 = val_dataset[i][1].to(device)
-            yval = torch.tensor(val_dataset[i][2]).to(device)
-
+            input1 = val_dataset[i][0]
+            input2 = val_dataset[i][1]
+            yval = val_dataset[i][2]
             # Forward pass
-            pred, _, _ = model(input1, input2)
+            pred = model(input1, input2)
 
             # Loss computation (avoiding division by zero)
             if yval > 0.0:

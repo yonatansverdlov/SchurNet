@@ -178,4 +178,4 @@ class SharedProductNet(nn.Module):
         embd1, embd2 = self.encoder(input1, input2)
         embd1, embd2 = self.phi(embd1), self.phi(embd2)
         output = self.rho(embd1 + embd2)
-        return output, embd1, embd2
+        return output
