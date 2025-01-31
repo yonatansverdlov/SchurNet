@@ -21,7 +21,7 @@ To install the necessary dependencies for this component, create the environment
 Download the datasets from [Here](https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance` folder.
 ### Training
-Choose `set_name` in ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna(RNA).
+Choose `set_name` in ncircle3, ncircle6, random, mn_small(ModelNet small), mn_large(ModelNet large), rna(RNA).
 After downloading the data, please run the following command to start the training process:
 ```bash
 cd Wasserstein_Distance
