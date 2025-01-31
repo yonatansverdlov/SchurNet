@@ -45,7 +45,7 @@ To run the MLP experiments, first download the data:
 ```bash
 mkdir -p data
 wget "https://www.dropbox.com/s/sv85hrjswaspok4/mnist_classifiers.zip" -P data
-unzip -q data/datasets/mnist_classifiers.zip -d data/samples
+unzip -q data/mnist_classifiers.zip -d data/samples
 
 ```
 ### CIFAR10 MLP
@@ -53,7 +53,7 @@ To run the MLP experiments, first download the data:
 ```bash
 mkdir -p data
 wget "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1" -P data/
-unzip -q data/datasets/cifar_classifiers.zip -d data/samples
+unzip -q data/cifar_classifiers.zip -d data/samples
 ```
 ### Split data:
 Run
