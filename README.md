@@ -18,7 +18,7 @@ python train.py --model_type model_type --noise noise_level
 ## Wasserstein Distance Computation
 To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
 ### Data
-Download the datasets from [Here](https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX).
+Download the datasets from [Here](https://app.filen.io/#/drive/9f379ca2-50f0-4099-9258-027827d831ae).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance/data` folder.
 ### Training
 Choose `set_name` in `ncircle3`, `ncircle6`, `random`, `mn_small`, `mn_large`, `rna`.
