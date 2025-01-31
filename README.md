@@ -2,7 +2,7 @@
 ### Overview
 This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"](https://arxiv.org/abs/2410.06665).
 ## General Setup
-To create a conda enviorment that is good for all experiments, please run 
+To create a conda environment that is good for all experiments, please run 
 ```bash
 cd SchurNet
 conda env create -f dependencies.yml 
@@ -17,7 +17,7 @@ python train.py --model_type model_type --noise noise_level
 ```
 ## Wasserstein Distance Computation
 ### Data
-Download the datasets from [Here](https://app.filen.io/#/drive/9f379ca2-50f0-4099-9258-027827d831ae).
+Download the datasets from [Here](https://www.kaggle.com/datasets/yonatansverdlov/data-for-wasserstein-distance-computation).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance/data` folder.
 ### Training
 Choose `set_name` in `ncircle3`, `ncircle6`, `random`, `mn_small`, `mn_large`, `rna`.
