@@ -43,31 +43,31 @@ Choose `set_type` to be `mnist` or `cifar`.
 ### MNIST MLP
 To run the MLP experiments, first download the data:
 ```bash
-mkdir -p data/datasets
-wget "https://www.dropbox.com/s/sv85hrjswaspok4/mnist_classifiers.zip" -P data/datasets
-unzip -q data/datasets/mnist_classifiers.zip -d data/datasets/samples
+mkdir -p data
+wget "https://www.dropbox.com/s/sv85hrjswaspok4/mnist_classifiers.zip" -P data
+unzip -q data/datasets/mnist_classifiers.zip -d data/samples
 
 ```
 ### CIFAR10 MLP
 To run the MLP experiments, first download the data:
 ```bash
-mkdir -p data/datasets
-wget "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1" -P data/datasets
-unzip -q data/datasets/cifar_classifiers.zip -d data/datasets/samples
+mkdir -p data
+wget "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1" -P data/
+unzip -q data/datasets/cifar_classifiers.zip -d data/samples
 ```
 ### Split data:
 Run
 ```bash
-python code/experiments/utils/data_utils/generate_splits.py --set_type set_type
+python utils/data_utils/generate_splits.py --set_type set_type
 ```
 ### Training
 For our model with the shared layers run:
 ```bash
-python code/experiments/mlp_image_classifier/trainer.py --set_type set_type --shared True
+python trainer.py --set_type set_type --shared True
 ```
 For the baseline of Siamese model, run:
 ```bash
-python code/experiments/mlp_image_classifier/trainer.py --set_type set_type --shared False
+python trainer.py --set_type set_type --shared False
 ```
 
 ## Citation
