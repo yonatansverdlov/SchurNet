@@ -1,8 +1,19 @@
 # SchurNet
-
+## General Setup
+To create a conda enviorment that is good for all experiments, please run 
+```bash
+conda env create -f dependencies.yml 
+conda activate SchurNet
+```
 ### Overview
 This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"](https://arxiv.org/abs/2410.06665).
-
+## Graph Matching
+In this experiment, we highlight the need of all linear equivariant layers. 
+Choose a model_type Siamese, SchurNet, and DSS. Choose noise_level and run:
+```bash
+cd graph_matching
+python train.py --model_type model_type --noise_level noise_level
+```
 ## Wasserstein Distance Computation
 To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
 
