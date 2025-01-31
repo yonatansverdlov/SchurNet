@@ -38,7 +38,7 @@ cd DWS
 pip install -r requirements.txt
 ```
 ### Data
-Choose `set_type` to be `mnist` or `cifar`.
+Choose `data_name` to be `mnist` or `cifar`.
 
 ### MNIST MLP
 To run the MLP experiments, first download the data:
@@ -63,11 +63,11 @@ python utils/data_utils/generate_splits.py --set_type set_type
 ### Training
 For our model with the shared layers run:
 ```bash
-python trainer.py --set_type set_type --shared True
+python trainer.py --data_name data_name --shared True
 ```
 For the baseline of Siamese model, run:
 ```bash
-python trainer.py --set_type set_type --shared False
+python trainer.py --data_name data_name --shared False
 ```
 
 ## Citation
