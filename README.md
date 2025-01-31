@@ -11,7 +11,7 @@ conda activate SchurNet
 In this experiment, we highlight the need of all linear equivariant layers. 
 Choose a `model_type` Siamese, SchurNet, and DSS. Choose `noise_level` and run:
 ```bash
-cd graph_matching
+cd SchurNet/graph_matching
 python train.py --model_type model_type --noise_level noise_level
 ```
 ## Wasserstein Distance Computation
