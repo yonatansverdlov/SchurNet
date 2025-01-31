@@ -1,4 +1,4 @@
-name: weis_dis
+name: SchurNet
 channels:
   - conda-forge
   - defaults

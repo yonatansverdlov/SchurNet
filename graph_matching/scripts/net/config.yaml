@@ -3,7 +3,7 @@ SchurNet:
   wd: 0.00001
   bs: 10
   lr_factor: 0.7
-  dims: [1,256,256,256,1]
+  dims: [1,256,256,256,256,256, 1]
   max_epochs: 50
   seed: 1
 Siamese:
