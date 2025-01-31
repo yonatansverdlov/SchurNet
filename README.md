@@ -58,7 +58,7 @@ unzip -q data/cifar_classifiers.zip -d data/samples
 ### Split data:
 Run
 ```bash
-python utils/data_utils/generate_splits.py --set_type set_type
+python utils/data_utils/generate_splits.py --data_name data_name
 ```
 ### Training
 For our model with the shared layers run:
