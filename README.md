@@ -12,7 +12,7 @@ conda activate SchurNet
 In this experiment, we highlight the need of all linear equivariant layers. 
 Choose a `model_type` Siamese, SchurNet, and DSS. Choose `noise_level` and run:
 ```bash
-cd SchurNet/graph_matching
+cd graph_matching
 python train.py --model_type model_type --noise noise_level
 ```
 ## Wasserstein Distance Computation
@@ -24,7 +24,7 @@ Unzip the downloaded file and place the data in the `Wasserstein_Distance` folde
 Choose `set_name` in ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna(RNA).
 After downloading the data, please run the following command to start the training process:
 ```bash
-cd Wasserstein_Distance/script
+cd Wasserstein_Distance
 python train_wd.py --dataset_name set_name
 ```
 ## Deep Weight Space Alignment
