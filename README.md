@@ -27,6 +27,9 @@ cd Wasserstein_Distance
 python train_wd.py --dataset_name set_name
 ```
 ## Deep Weight Space Alignment
+```bash
+cd DWS
+```
 ### Data
 Choose `data_name` to be `mnist` or `cifar`.
 
