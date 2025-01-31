@@ -34,6 +34,7 @@ pip-delete-this-directory.txt
 .venv
 env/
 venv/
+wandb
 ENV/
 env.bak/
 venv.bak/
