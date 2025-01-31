@@ -10,7 +10,7 @@ conda activate SchurNet
 ```
 ## Graph Matching
 In this experiment, we highlight the need of all linear equivariant layers. 
-Choose a `model_type` Siamese, SchurNet, and DSS. Choose `noise_level` and run:
+Choose a `model_type` in `Siamese`, `SchurNet`, and `DSS`. Choose `noise_level` and run:
 ```bash
 cd graph_matching
 python train.py --model_type model_type --noise noise_level
