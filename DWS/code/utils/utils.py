@@ -65,7 +65,7 @@ common_parser.add_argument(
 common_parser.add_argument(
     "--wandb-project", type=str, default="deep-align", help="wandb project name"
 )
-common_parser.set_defaults(wandb=False)
+common_parser.set_defaults(wandb=True)
 
 from pathlib import Path
 def set_seed(seed):

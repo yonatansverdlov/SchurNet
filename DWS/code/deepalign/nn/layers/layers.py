@@ -452,56 +452,6 @@ class BiasSharedBlock(BaseLayer):
 
         return out_biases
 
-class BiasSharedBlockExtract(BaseLayer):
-    def __init__(
-            self,
-            in_features,
-            out_features,
-            shapes,
-            bias: bool = True,
-            reduction: str = "max",
-            n_fc_layers: int = 1,
-            num_heads: int = 8,
-            set_layer: str = "sab",
-            hnp_setup=True,
-    ):
-        super().__init__(
-            in_features=in_features,
-            out_features=out_features,
-            bias=bias,
-            reduction=reduction,
-            n_fc_layers=n_fc_layers,
-            num_heads=num_heads,
-            set_layer=set_layer,
-        )
-        assert all([len(shape) == 1 for shape in shapes])
-
-        self.shapes = shapes
-        self.n_layers = len(shapes)
-
-        self.layers = ModuleDict()
-        # construct layers:
-        for i in range(self.n_layers):
-            self.layers[f"{i}_{i}"] = BiasSharedLayerExtract(
-                in_features=in_features,
-                out_features=out_features,
-                in_shape=shapes[i],
-                out_shape=shapes[i],
-                reduction=reduction,
-                bias=bias,
-                num_heads=num_heads,
-                set_layer=set_layer,
-                n_fc_layers=n_fc_layers,
-                is_output_layer=(i == self.n_layers - 1) and hnp_setup,
-            )
-
-    def forward(self, x: Tuple[torch.tensor]):
-        out_biases = [None for _ in range(self.n_layers)] 
-        for i in range(self.n_layers):
-            out_bias = self.layers[f"{i}_{i}"](x[i])
-            out_biases[i] = out_bias
-        return torch.cat(out_biases,dim = 1)
-
 class SharedWeightLayer(BaseLayer):
     """Mapping L(W1_1,W1_2) -> L(W1_1,W1_2)"""
 
@@ -747,62 +697,6 @@ class WeightSharedBlock(BaseLayer):
 
         return out_wights
 
-class WeightSharedBlockExtract(BaseLayer):
-    def __init__(
-            self,
-            in_features,
-            out_features,
-            shapes,
-            bias: bool = True,
-            reduction: str = "max",
-            n_fc_layers: int = 1,
-            num_heads: int = 8,
-            set_layer: str = "sab",
-    ):
-        super().__init__(
-            in_features=in_features,
-            out_features=out_features,
-            bias=bias,
-            reduction=reduction,
-            n_fc_layers=n_fc_layers,
-            num_heads=num_heads,
-            set_layer=set_layer,
-        )
-        assert all([len(shape) == 2 for shape in shapes])
-        assert len(shapes) > 2
-        self.shapes = shapes
-        self.n_layers = len(shapes)
-        self.layers = ModuleDict()
-        first_dim_is_output = False
-        last_dim_is_output = False
-        # construct layers:
-        for i in range(self.n_layers):
-            if i == 0:
-                first_dim_is_output = True
-            if i == self.n_layers - 1:
-                last_dim_is_output = True
-            self.layers[f"{i}_{i}"] = SharedWeightLayerExtract(
-                in_features=in_features,
-                out_features=out_features,
-                in_shape=shapes[i],
-                out_shape=shapes[i],
-                reduction=reduction,
-                bias=bias,
-                n_fc_layers=n_fc_layers,
-                last_dim_is_output=last_dim_is_output,
-                first_dim_is_output=first_dim_is_output)
-
-            first_dim_is_output = False
-            last_dim_is_output = False
-
-    def forward(self, x: Tuple[torch.tensor]):
-        out_weights = [None for _ in range(self.n_layers)]
-        for i in range(self.n_layers):
-            out_weight = self.layers[f"{i}_{i}"](x[i])
-            out_weights[i] = out_weight
-        # out_weights = torch.cat(out_weights,dim = 1)
-        return torch.cat(out_weights,dim = 1)
-
 def process_tensor(x):
     """
     Splits the input tensor x into bias and weight components, 
@@ -918,14 +812,14 @@ class DownSampleCannibalLayer(CannibalLayer):
         self.skip = self._get_mlp(
             in_features=in_features,
             out_features=out_features,
-            bias=bias,
-        )
-        self.shared_bias = BiasSharedBlock(in_features=in_features, out_features=out_features, shapes=bias_shapes,
-                                        reduction='mean', n_fc_layers=n_fc_layers, num_heads=num_heads,
-                                        set_layer=set_layer)
-        self.shared_weights = WeightSharedBlock(in_features=in_features, out_features=out_features,
-                                                shapes=weight_shapes, reduction='mean', n_fc_layers=n_fc_layers,
-                                                num_heads=num_heads, set_layer=set_layer)
+            bias=bias)
+        if self.add_common:
+            self.shared_bias = BiasSharedBlock(in_features=in_features, out_features=out_features, shapes=bias_shapes,
+                                            reduction='mean', n_fc_layers=n_fc_layers, num_heads=num_heads,
+                                            set_layer=set_layer)
+            self.shared_weights = WeightSharedBlock(in_features=in_features, out_features=out_features,
+                                                    shapes=weight_shapes, reduction='mean', n_fc_layers=n_fc_layers,
+                                                    num_heads=num_heads, set_layer=set_layer)
 
     def forward(self, x: Tuple[Tuple[torch.tensor], Tuple[torch.tensor]]):
 

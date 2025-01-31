@@ -1,0 +1,24 @@
+SchurNet:
+  lr: 0.001
+  wd: 0.00001
+  bs: 10
+  lr_factor: 0.7
+  dims: [1,256,256,256,1]
+  max_epochs: 10
+  seed: 1
+Siamese:
+  lr: 0.001
+  wd: 0.00001
+  bs: 64
+  lr_factor: 0.7
+  dims: [1,256,256,256,1]
+  max_epochs: 50
+  seed: 0
+DSS:
+  lr: 0.0005
+  wd: 0.00001
+  bs: 64
+  lr_factor: 0.7
+  dims: [1,256,256,256,256,256, 1]
+  max_epochs: 50
+  seed: 3

@@ -826,7 +826,6 @@ class MatchingModelsDataset(INRDataset):
     def __getitem__(self, item):
         path0 = self.dataset[item]
         # sample index
-        # print(path0)
         path1 = random.choice(self.dataset)
 
         data_dict_0 = self._prepare_data(path0)
