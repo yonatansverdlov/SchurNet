@@ -4,6 +4,7 @@ This repo contains code for the experimental part of the paper ["Revisiting Mult
 ## General Setup
 To create a conda enviorment that is good for all experiments, please run 
 ```bash
+cd SchurNet
 conda env create -f dependencies.yml 
 conda activate SchurNet
 ```
