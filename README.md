@@ -16,10 +16,6 @@ cd graph_matching
 python train.py --model_type model_type --noise noise_level
 ```
 ## Wasserstein Distance Computation
-Activate the environment if needed by:
-```bash
-conda activate SchurNet
-```
 ### Data
 Download the datasets from [Here](https://app.filen.io/#/drive/9f379ca2-50f0-4099-9258-027827d831ae).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance/data` folder.
