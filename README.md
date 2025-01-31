@@ -1,20 +1,26 @@
 # SchurNet
-
 ### Overview
 This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"](https://arxiv.org/abs/2410.06665).
-
+## General Setup
+To create a conda enviorment that is good for all experiments, please run 
+```bash
+conda env create -f dependencies.yml 
+conda activate SchurNet
+```
+## Graph Matching
+In this experiment, we highlight the need of all linear equivariant layers. 
+Choose a `model_type` Siamese, SchurNet, and DSS. Choose `noise_level` and run:
+```bash
+cd SchurNet/graph_matching
+python train.py --model_type model_type --noise noise_level
+```
 ## Wasserstein Distance Computation
 To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
-
-```bash
-conda env create -f dependencies.yml
-conda activate weis_dis
-```
 ### Data
 Download the datasets from [Here](https://drive.filen.io/f/69d1d525-1ce8-4770-88d6-a2cbc700785c#SXRTYQFcSUmGEirL8GQWZPEpSAaAY8EX).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance` folder.
 ### Training
-Choose one of the datasets of ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna(RNA) named set_name.
+Choose `set_name` in ncircle3, ncircle6, random, mn_small(modelnet small), mn_large(modelnet large), rna(RNA).
 After downloading the data, please run the following command to start the training process:
 ```bash
 cd Wasserstein_Distance/script
