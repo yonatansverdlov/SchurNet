@@ -16,7 +16,10 @@ cd graph_matching
 python train.py --model_type model_type --noise noise_level
 ```
 ## Wasserstein Distance Computation
-To install the necessary dependencies for this component, create the environment using the provided environment.yml file by running the following commands:
+Activate the environment if needed by:
+```bash
+conda activate SchurNet
+```
 ### Data
 Download the datasets from [Here](https://app.filen.io/#/drive/9f379ca2-50f0-4099-9258-027827d831ae).
 Unzip the downloaded file and place the data in the `Wasserstein_Distance/data` folder.
@@ -28,15 +31,6 @@ cd Wasserstein_Distance
 python train_wd.py --dataset_name set_name
 ```
 ## Deep Weight Space Alignment
-### Installation
-```bash
-conda create --name deep-align python=3.9
-conda activate deep-align
-conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
-
-cd DWS
-pip install -r requirements.txt
-```
 ### Data
 Choose `data_name` to be `mnist` or `cifar`.
 
