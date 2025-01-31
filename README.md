@@ -38,7 +38,7 @@ cd DWS
 pip install -r requirements.txt
 ```
 ### Data
-Choose set_type to be `mnist` or `cifar`.
+Choose `set_type` to be `mnist` or `cifar`.
 
 ### MNIST MLP
 To run the MLP experiments, first download the data:
