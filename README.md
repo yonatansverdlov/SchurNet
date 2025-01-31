@@ -63,11 +63,11 @@ python utils/data_utils/generate_splits.py --data_name data_name
 ### Training
 For our model with the shared layers run:
 ```bash
-python trainer.py --data_name data_name --shared True
+python trainer.py --data_name data_name --add_common True
 ```
 For the baseline of Siamese model, run:
 ```bash
-python trainer.py --data_name data_name --shared False
+python trainer.py --data_name data_name --add_common False
 ```
 
 ## Citation
