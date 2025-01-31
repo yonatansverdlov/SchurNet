@@ -1,7 +1,6 @@
 """
 Training script for the graph model with multiple fixed seeds.
 """
-import numpy as np
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint

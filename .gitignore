@@ -31,6 +31,7 @@ pip-delete-this-directory.txt
 
 # Conda environments
 .env
+.history
 .venv
 env/
 venv/
@@ -57,7 +58,7 @@ data/raw/
 
 # Ignore all data files and directories
 data/
-
+data_old/
 # RDKit and other chemistry-related files (if applicable)
 *.rdkit
 

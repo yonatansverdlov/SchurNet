@@ -453,10 +453,10 @@ def process_and_plot(data, save_dir="plots"):
 
 if __name__ == "__main__":
     path_to_proj = Path(__file__).resolve()
-    parent_directory = path_to_proj.parent.parent
+    parent_directory = path_to_proj.parent
     parser = ArgumentParser("DEEP-ALIGN MLP matching trainer", parents=[common_parser])
     parser.set_defaults(
-        n_epochs=5,
+        n_epochs=100,
         batch_size=7,
     )
     parser.add_argument(
