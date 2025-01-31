@@ -100,7 +100,7 @@ def train_and_evaluate(config, model_type, noise, seed):
 if __name__ == "__main__":
     # Argument parser
     parser = argparse.ArgumentParser(description="Training script for graph models.")
-    parser.add_argument("--model_type", type=str, required=True, help="Model type: SchurNet, Siamese, or DSS.")
+    parser.add_argument("--model_type", type=str, required=True, help="Model type: SchurNet, Siamese, or DSS.",choices=["SchurNet", "Siamese", "DSS"]) 
     parser.add_argument("--noise", type=float, required=True, help="Noise level for the graphs.")
     args = parser.parse_args()
 

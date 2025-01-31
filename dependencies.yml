@@ -15,5 +15,10 @@ dependencies:
       - tensorboard
       - pyyaml
       - tqdm
+      - matplotlib
+      - scikit-learn
+      - random-fourier-features-pytorch
+      - wandb  # Added wandb (latest version)
+
 
 
