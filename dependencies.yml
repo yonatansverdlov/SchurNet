@@ -9,8 +9,10 @@ dependencies:
       - torch
       - torchvision
       - torchaudio
+      - pytorch-lightning
       - easydict
       - h5py
       - tensorboard
       - pyyaml
       - tqdm
+

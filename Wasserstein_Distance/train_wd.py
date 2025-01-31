@@ -3,10 +3,9 @@ import numpy as np
 import torch
 import argparse
 import yaml
-from codes.fit_productnet import train_point_productnet, validation_loss
-from codes.utils import WassersteinPairDataset, return_dim, return_path
+from net.fit_productnet import train_point_productnet, validation_loss
+from net.utils import WassersteinPairDataset, return_dim, return_path
 from easydict import EasyDict
-
 
 def return_dataset(dataset_name: str, small: bool,device:str):
     """
@@ -15,6 +14,7 @@ def return_dataset(dataset_name: str, small: bool,device:str):
     Args:
         dataset_name (str): The name of the dataset.
         small (bool): If True, loads the 'small' version of the dataset.
+        device (str): Device to run the model on ('cuda' or 'cpu').
 
     Returns:
         tuple: Training and validation datasets as WassersteinPairDataset objects.
@@ -51,7 +51,7 @@ def train_wd(dataset_name: str, check_out_of_dist: bool = False):
     dimension = return_dim(dataset_name=dataset_name)
 
     # Load configuration for the dataset
-    with open('codes/config.yaml', 'r') as f:
+    with open('net/config.yaml', 'r') as f:
         config = yaml.safe_load(f)[dataset_name]
     config = EasyDict(config)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -83,7 +83,6 @@ def train_wd(dataset_name: str, check_out_of_dist: bool = False):
         lr=config.lr,
         iterations=config.max_iter,
         batch_size=config.batch_size,
-        activation=config.act,
         batch=config.use_bn,
         wd=config.wd,
         factor=config.factor,

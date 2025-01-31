@@ -1,9 +1,7 @@
-from functools import partial
-import torch.nn as nn
 from torch.utils.data import Dataset
 import torch
 
-def return_path(dataset_name, small=True):
+def return_path(dataset_name:str, small:bool=True):
     """
     Returns the file paths for the training and validation datasets.
 
@@ -15,12 +13,12 @@ def return_path(dataset_name, small=True):
         tuple: Paths to the training and validation dataset files.
     """
     size_suffix = 'small' if small else 'large'
-    train_path = f'../data/samples/{dataset_name}/train_{size_suffix}.npz'
-    val_path = f'../data/samples/{dataset_name}/val_{size_suffix}.npz'
+    train_path = f'./data/samples/{dataset_name}/train_{size_suffix}.npz'
+    val_path = f'./data/samples/{dataset_name}/val_{size_suffix}.npz'
     return train_path, val_path
 
 
-def return_dim(dataset_name):
+def return_dim(dataset_name:str):
     """
     Returns the input dimension of the dataset based on its name.
 
@@ -40,28 +38,8 @@ def return_dim(dataset_name):
     }
     return dataset_mapping.get(dataset_name, None)
 
-
-def return_act(act_name: str, slope: float):
-    """
-    Returns the activation function based on the provided name.
-
-    Args:
-        act_name (str): Name of the activation function ('relu', 'lrelu', 'tanh').
-        slope (float): Slope parameter for LeakyReLU.
-
-    Returns:
-        Callable: Corresponding activation function class.
-    """
-    activation_functions = {
-        "relu": nn.ReLU,
-        "lrelu": partial(nn.LeakyReLU, slope),
-        "tanh": nn.Tanh
-    }
-    return activation_functions.get(act_name, None)
-
-
 class WassersteinPairDataset(Dataset):
-    def __init__(self, sources, targets, emds, device):
+    def __init__(self, sources:list, targets:list, emds:list, device:str):
         self.sources = [p.to(dtype=torch.float32, device=device) if isinstance(p, torch.Tensor) else torch.tensor(p, dtype=torch.float32, device=device) for p in sources]
         self.targets = [p.to(dtype=torch.float32, device=device) if isinstance(p, torch.Tensor) else torch.tensor(p, dtype=torch.float32, device=device) for p in targets]
         self.emds = [p.to(dtype=torch.float32, device=device) if isinstance(p, torch.Tensor) else torch.tensor(p, dtype=torch.float32, device=device) for p in emds]
@@ -70,7 +48,7 @@ class WassersteinPairDataset(Dataset):
     def __len__(self):
         return len(self.emds)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx:int):
         source = self.sources[idx]
         target = self.targets[idx]
         emd = self.emds[idx]

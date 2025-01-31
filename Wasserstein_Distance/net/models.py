@@ -1,10 +1,9 @@
 import torch
 import torch.nn as nn
 from torch import Tensor
-from codes.utils import return_act
 
 
-def initialize_mlp(input_sz, hidden_sz, output_sz, layers, slope, batch_norm, activation):
+def initialize_mlp(input_sz:int, hidden_sz:int, output_sz:int, num_layers:int, slope:float, batch_norm:bool):
     """
     Initializes a Multi-Layer Perceptron (MLP) with specified parameters.
 
@@ -12,23 +11,22 @@ def initialize_mlp(input_sz, hidden_sz, output_sz, layers, slope, batch_norm, ac
         input_sz (int): Input size.
         hidden_sz (int): Size of hidden layers.
         output_sz (int): Output size.
-        layers (int): Number of layers.
+        num_layers (int): Number of layers.
         slope (float): Slope parameter for LeakyReLU.
         batch_norm (bool): Whether to include batch normalization.
-        activation (str): Name of the activation function.
 
     Returns:
         nn.Sequential: A PyTorch MLP model.
     """
-    activation_function = return_act(act_name=activation, slope=slope)
-    layers_list = [nn.Linear(input_sz, hidden_sz), activation_function()]
+    activation_function = nn.LeakyReLU(slope)
+    layers_list = [nn.Linear(input_sz, hidden_sz), activation_function]
     if batch_norm:
         layers_list.append(nn.BatchNorm1d(hidden_sz))
 
-    for _ in range(layers - 2):
+    for _ in range(num_layers - 2):
         layers_list.extend([
             nn.Linear(hidden_sz, hidden_sz),
-            activation_function(),
+            activation_function,
             nn.BatchNorm1d(hidden_sz) if batch_norm else None
         ])
 
@@ -56,11 +54,10 @@ class SharedMLP(nn.Module):
         layers (int): Number of layers.
         slope (float): Slope parameter for LeakyReLU.
         batch_norm (bool): Whether to include batch normalization.
-        activation (str): Activation function name.
     """
-    def __init__(self, input_sz, hidden_sz, output_sz, layers, slope, batch_norm, activation):
+    def __init__(self, input_sz:int, hidden_sz:int, output_sz:int, num_layers:int, slope:float, batch_norm:bool):
         super(SharedMLP, self).__init__()
-        activation_function = return_act(act_name=activation, slope=slope)
+        activation_function = nn.LeakyReLU(slope) 
 
         self.common_layer = nn.ParameterList()  # Shared parameters for all layers
         self.phi_layers = nn.ModuleList()  # Layer-specific modules
@@ -69,16 +66,16 @@ class SharedMLP(nn.Module):
         self.common_layer.append(nn.Parameter(torch.empty(input_sz, hidden_sz)))
         self.phi_layers.append(nn.Sequential(
             nn.Linear(input_sz, hidden_sz),
-            activation_function(),
+            activation_function,
             nn.BatchNorm1d(hidden_sz) if batch_norm else None
         ))
 
         # Hidden layers
-        for _ in range(layers - 2):
+        for _ in range(num_layers - 2):
             self.common_layer.append(nn.Parameter(torch.empty(hidden_sz, hidden_sz)))
             self.phi_layers.append(nn.Sequential(
                 nn.Linear(hidden_sz, hidden_sz),
-                activation_function(),
+                activation_function,
                 nn.BatchNorm1d(hidden_sz) if batch_norm else None
             ))
 
@@ -86,7 +83,7 @@ class SharedMLP(nn.Module):
         self.common_layer.append(nn.Parameter(torch.empty(hidden_sz, output_sz)))
         self.phi_layers.append(nn.Sequential(
             nn.Linear(hidden_sz, output_sz),
-            activation_function()
+            activation_function
         ))
 
         self._initialize_parameters()
@@ -131,25 +128,22 @@ class SharedProductNet(nn.Module):
         bn (bool): Whether to use batch normalization.
         slope (float): Slope parameter for LeakyReLU.
     """
-    def __init__(self, encoder_params: dict, phi_params: dict, rho_params: dict, activation: str, bn: bool, slope: float):
+    def __init__(self, encoder_params: dict, phi_params: dict, rho_params: dict, bn: bool, slope: float):
         super(SharedProductNet, self).__init__()
 
         self.encoder = SharedMLP(
             input_sz=encoder_params['input_dim'],
             hidden_sz=encoder_params['hidden'],
             output_sz=encoder_params['output'],
-            layers=encoder_params['layers'],
-            activation=activation,
+            num_layers=encoder_params['layers'],
             batch_norm=bn,
-            slope=slope
-        )
+            slope=slope)
 
         self.phi = initialize_mlp(
             input_sz=encoder_params['output'],
             hidden_sz=phi_params['hidden'],
             output_sz=phi_params['output'],
-            layers=phi_params['layers'],
-            activation=activation,
+            num_layers=phi_params['layers'],
             batch_norm=False,
             slope=slope
         )
@@ -158,8 +152,7 @@ class SharedProductNet(nn.Module):
             input_sz=phi_params['output'],
             hidden_sz=rho_params['hidden'],
             output_sz=1,
-            layers=rho_params['layers'],
-            activation=activation,
+            num_layers=rho_params['layers'],
             batch_norm=False,
             slope=slope
         )

@@ -8,7 +8,6 @@ ncircle3:
     num_layer: 5
     use_bn: True
     opt_type: Adam 
-    act: lrelu
     slope: 0.15 
     max_iter: 200
 ncircle6:
@@ -20,7 +19,6 @@ ncircle6:
     embed_size: 250
     num_layer: 5
     opt_type: Adam
-    act: lrelu
     use_bn: True
     slope: 0.1
     max_iter: 200
@@ -35,7 +33,6 @@ random:
     use_bn: True
     slope: 0.05
     opt_type: AdamW
-    act: lrelu
     max_iter: 200
 mn_small:
     lr: 0.0001
@@ -48,7 +45,6 @@ mn_small:
     embed_size: 200
     num_layer: 5
     use_bn: True
-    act: lrelu
     max_iter: 200
 mn_large:
     lr: 0.0001
@@ -59,7 +55,6 @@ mn_large:
     embed_size: 200
     num_layer: 5
     use_bn: True
-    act: lrelu
     slope: 0.1
     opt_type: Adam
     max_iter: 200
@@ -73,6 +68,5 @@ rna:
     num_layer: 5
     use_bn: True
     opt_type: AdamW
-    act: lrelu
     slope: 0.05
     max_iter: 200

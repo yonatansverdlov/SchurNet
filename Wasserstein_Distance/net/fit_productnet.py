@@ -5,7 +5,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset
 from torch.optim import Adam, AdamW
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-from codes.models import SharedProductNet
+from net.models import SharedProductNet
 from tqdm import trange
 
 # Define the Mean Squared Error (MSE) loss
@@ -23,7 +23,6 @@ def train_point_productnet(
     lr: float,
     factor: float,
     slope: float,
-    activation: str = 'relu',
     iterations: int = 200,
     batch_size: int = 64,
     batch: bool = True,
@@ -44,7 +43,6 @@ def train_point_productnet(
         lr (float): Learning rate for the optimizer.
         factor (float): Factor for learning rate reduction.
         slope (float): Slope for LeakyReLU activation.
-        activation (str): Activation function ('relu', 'lrelu', 'tanh'). Default is 'relu'.
         iterations (int): Number of training iterations. Default is 200.
         batch_size (int): Batch size for training. Default is 64.
         batch (bool): Whether to use batch normalization. Default is True.
@@ -59,7 +57,7 @@ def train_point_productnet(
 
     # Update the input dimension for the model
     initial['input_dim'] = dimension
-    model = SharedProductNet(initial, phi, rho, activation=activation, bn=batch, slope=slope).to(device)
+    model = SharedProductNet(initial, phi, rho, bn=batch, slope=slope).to(device)
 
     # Choose optimizer
     optimizer = Adam(model.parameters(), lr=lr, weight_decay=wd) if opt_type == 'Adam' else AdamW(model.parameters(), lr=lr, weight_decay=wd)
@@ -92,7 +90,7 @@ def train_point_productnet(
                 optimizer.zero_grad()
 
         # Validation loss and scheduler step
-        val_loss = validation_loss(val_dataset=val_dataset, model=model, device=device)
+        val_loss = validation_loss(val_dataset=val_dataset, model=model)
         scheduler.step(val_loss)
 
         # Save the best model
@@ -105,7 +103,7 @@ def train_point_productnet(
     return best_model
 
 
-def validation_loss(val_dataset: Dataset, model: SharedProductNet, device: str):
+def validation_loss(val_dataset: Dataset, model: SharedProductNet):
     """
     Computes the validation loss for the given dataset.
 
@@ -132,5 +130,3 @@ def validation_loss(val_dataset: Dataset, model: SharedProductNet, device: str):
                 total_loss.append(loss.item())
 
     return np.mean(total_loss)
-
-
