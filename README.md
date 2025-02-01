@@ -17,8 +17,10 @@ python train.py --model_type model_type --noise noise_level
 ```
 ## Wasserstein Distance Computation
 ### Data
-Download the datasets from [Here](https://www.kaggle.com/datasets/yonatansverdlov/data-for-wasserstein-distance-computation).
-Unzip the downloaded file and place the data in the `Wasserstein_Distance/data` folder.
+Run the following code:
+```bash
+python -c "import kagglehub, shutil, os; os.makedirs('./data/samples', exist_ok=True); p=kagglehub.dataset_download('yonatansverdlov/data-for-wasserstein-distance-computation'); [shutil.move(os.path.join(p, f), os.path.join('./data/samples', f)) for f in os.listdir(p)]; shutil.rmtree(p, ignore_errors=True); print('Dataset downloaded directly to: ./data/samples')"
+```
 ### Training
 Choose `set_name` in `ncircle3`, `ncircle6`, `random`, `mn_small`, `mn_large`, `rna`.
 After downloading the data, please run the following command to start the training process:

@@ -18,7 +18,8 @@ dependencies:
       - matplotlib
       - scikit-learn
       - random-fourier-features-pytorch
-      - wandb  # Added wandb (latest version)
+      - wandb
+      - kaggle
 
 
 
