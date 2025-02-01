@@ -47,10 +47,10 @@ def generate_splits(data_root, save_path, val_size=1000, test_size=1000, max_mod
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--set_type",type=str,default='cifar',choices=['cifar','mnist'])
+    parser.add_argument("--data_name",type=str,default='cifar',choices=['cifar','mnist'])
     args = parser.parse_args()
-    set_type = args.set_type
-    args.data_root = os.path.join("data/samples", f"{set_type}_models")
-    args.save_path = os.path.join("data/samples", f"{set_type}_models_processed.json")
+    data_name = args.data_name
+    args.data_root = os.path.join("data/samples", f"{data_name}_models")
+    args.save_path = os.path.join("data/samples", f"{data_name}_models_processed.json")
     generate_splits(args.data_root, args.save_path, val_size=None, test_size=None, max_models=None)
     
