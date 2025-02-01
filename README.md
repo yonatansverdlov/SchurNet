@@ -29,16 +29,13 @@ After downloading the data, please run the following command to start the traini
 python train_wd.py --dataset_name set_name
 ```
 ## Deep Weight Space Alignment
-First, enter to the DWS directory:
-```bash
-cd DWS
-```
 ### Data
 Choose `data_name` to be `mnist` or `cifar`.
 
 ### MNIST MLP
 To run the MLP experiments, first download the data:
 ```bash
+cd DWS
 mkdir -p data
 wget "https://www.dropbox.com/s/sv85hrjswaspok4/mnist_classifiers.zip" -P data
 unzip -q data/mnist_classifiers.zip -d data/samples
@@ -47,6 +44,7 @@ python utils/data_utils/generate_splits.py --data_name mnist
 ### CIFAR10 MLP
 To run the MLP experiments, first download the data:
 ```bash
+cd DWS
 mkdir -p data
 wget "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1" -P data/
 unzip -q data/cifar_classifiers.zip -d data/samples
