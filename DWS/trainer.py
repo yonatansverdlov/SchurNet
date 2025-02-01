@@ -652,8 +652,8 @@ if __name__ == "__main__":
     device = get_device(gpus=args.gpu)
 
     logging.info(f"Using {args.data_name} dataset")
-    args.data_path = f'{parent_directory}/data/datasets/samples/{args.data_name}_models_processed.json'
-    args.image_data_path = f'{parent_directory}/data/datasets/samples/{args.data_name}_images'
+    args.data_path = f'{parent_directory}/data/samples/{args.data_name}_models_processed.json'
+    args.image_data_path = f'{parent_directory}/data/samples/{args.data_name}_images'
     image_flatten_size = dict(mnist=28 * 28, cifar10=32 * 32 * 3)[args.data_name]
     test = main(
         add_common=args.add_common,
