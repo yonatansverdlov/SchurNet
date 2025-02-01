@@ -19,7 +19,7 @@ dependencies:
       - scikit-learn
       - random-fourier-features-pytorch
       - wandb
-      - kaggle
+      - kagglehub
 
 
 

@@ -19,16 +19,17 @@ python train.py --model_type model_type --noise noise_level
 ### Data
 Run the following code:
 ```bash
+cd Wasserstein_Distance
 python -c "import kagglehub, shutil, os; os.makedirs('./data/samples', exist_ok=True); p=kagglehub.dataset_download('yonatansverdlov/data-for-wasserstein-distance-computation'); [shutil.move(os.path.join(p, f), os.path.join('./data/samples', f)) for f in os.listdir(p)]; shutil.rmtree(p, ignore_errors=True); print('Dataset downloaded directly to: ./data/samples')"
 ```
 ### Training
 Choose `set_name` in `ncircle3`, `ncircle6`, `random`, `mn_small`, `mn_large`, `rna`.
 After downloading the data, please run the following command to start the training process:
 ```bash
-cd Wasserstein_Distance
 python train_wd.py --dataset_name set_name
 ```
 ## Deep Weight Space Alignment
+First, enter to the DWS directory:
 ```bash
 cd DWS
 ```
