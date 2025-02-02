@@ -91,18 +91,18 @@ def train_wd(dataset_name: str, check_out_of_dist: bool = False):
     )
 
     # Validate the model
-    val_loss_small = validation_loss(val_dataset, shared_model, device)
-    model_dir = f'../data/models/{dataset_name}/{config}'
+    val_loss_small = validation_loss(val_dataset, shared_model)
+    model_dir = f'./data/models/{dataset_name}/{config}'
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, f'Model_{val_loss_small:.4f}.pth')
     torch.save(shared_model.state_dict(), model_path)
-    print(f"Model saved at {model_path}")
     print(f"The validation loss on the small dataset is {val_loss_small:.4f}")
+    print(f"Model saved at {model_path}")
 
     # Evaluate on out-of-distribution dataset (if applicable)
     if check_out_of_dist:
         train_dataset, val_dataset = return_dataset(dataset_name=dataset_name, small=False,device = device)
-        val_loss_gen = validation_loss(val_dataset, shared_model, device)
+        val_loss_gen = validation_loss(val_dataset, shared_model)
         print(f"The validation loss on the out-of-distribution dataset is {val_loss_gen:.4f}")
 
     return val_loss_small
