@@ -1,7 +1,9 @@
 # SchurNet
-### Overview
+Equivariant Linear Layers and Wreath Product Groups
+This repository explores the characterization of equivariant linear layers for representations of permutations and related groups. Instead of traditional parameter-sharing, the approach relies on irreducible representations and Schur’s lemma, providing new insights into existing models like:
 This repo contains code for the experimental part of the paper ["Revisiting Multi-Permutation Equivariance Thourgh The Lens of Irreducible Representations"](https://arxiv.org/abs/2410.06665).
-## General Setup
+
+## Installation
 To create a conda environment that is good for all experiments, please run 
 ```bash
 git clone git@github.com:yonatansverdlov/SchurNet.git
