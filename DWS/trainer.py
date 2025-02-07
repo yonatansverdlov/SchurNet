@@ -427,7 +427,7 @@ def process_and_plot(data, save_dir="plots"):
     
     # Extract curves
     curves = data['lmc_losses']
-    
+    print(curves)
     # Create lambda values for x-axis (evenly spaced between 0 and 1)
     num_points = len(next(iter(curves.values())))  # Number of points in the curves
     lambdas = np.linspace(0, 1, num_points)
@@ -451,196 +451,92 @@ def process_and_plot(data, save_dir="plots"):
     print(f"Plot saved to: {save_path}")
     plt.show()
 
+def set_seed(seed):
+    import random
+    import numpy as np
+    import torch
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+def get_device(gpus):
+    return "cuda" if torch.cuda.is_available() else "cpu"
+
+from pathlib import Path
+from argparse import ArgumentParser
+import wandb
+import logging
+from distutils.util import strtobool
+
 if __name__ == "__main__":
     path_to_proj = Path(__file__).resolve()
     parent_directory = path_to_proj.parent
+
+    # Use common_parser as in your original code
     parser = ArgumentParser("DEEP-ALIGN MLP matching trainer", parents=[common_parser])
+
+    parser.add_argument("--data_name", type=str, default='mnist', choices=["mnist", "cifar10"], help="Dataset to use")
+    parser.add_argument("--add_common", type=lambda x: bool(strtobool(x)), nargs="?", const=True, default=False, help="Enable common functionality")
+
+    # Parse preliminary arguments to determine dataset and add_common setting
+    pre_args, _ = parser.parse_known_args()
+
+    # Assign best hyperparameters based on dataset and add_common setting
+    best_hyperparams = {
+        ("mnist", True): {"lr": 0.001, "wd": 5e-05, "batch_size": 8},
+        ("mnist", False): {"lr": 0.001, "wd": 1e-05, "batch_size": 8},
+        ("cifar10", True): {"lr": 0.0005, "wd": 0.0001, "batch_size": 7},
+        ("cifar10", False): {"lr": 0.001, "wd": 0.0001, "batch_size": 7},
+    }
+
+    selected_params = best_hyperparams.get((pre_args.data_name, pre_args.add_common), {})
+
+    # Set default parameters using common_parser
     parser.set_defaults(
         n_epochs=100,
-        batch_size=7,
-    )
-    parser.add_argument(
-        "--lr",
-        type=float,
-        help="image data path",
-        default=0.001
-    )
-    parser.add_argument(
-        "--wd",
-        type=float,
-        help="image data path",
-        default=1e-5
-    )
-    parser.add_argument(
-        "--image-batch-size",
-        type=int,
-        default=32,
-        help="image batch size",
-    )
-    parser.add_argument(
-        "--loss",
-        type=str,
-        choices=["ce", "mse"],
-        default="ce",
-        help="loss func for perm",
-    )
-    parser.add_argument(
-        "--recon-loss",
-        type=str,
-        choices=["l2", "lmc", "both"],
-        default="both",
-        help="reconstruction loss type",
-    )
-    parser.add_argument(
-        "--optim",
-        type=str,
-        default="adamw",
-        choices=["adam", "sgd", "adamw"],
-        help="optimizer",
-    )
-    parser.add_argument(
-        "--data_name",
-        type=str,
-        default='mnist',
-        choices=["mnist", "cifar10"],
-        help="dataset to use",
-    )
-    parser.add_argument("--num-workers", type=int, default=5, help="num workers")
-    parser.add_argument(
-        "--reduction",
-        type=str,
-        default="max",
-        choices=["mean", "sum", "max", "attn"],
-        help="reduction strategy",
-    )
-    parser.add_argument(
-    "--common_reduction",
-    type=str,
-    default="max", 
-    choices=["mean", "sum", "max", "attn"],
-    help="reduction strategy")
-    
-    parser.add_argument(
-        "--dim-hidden",
-        type=int,
-        default=32,
-        help="dim hidden layers",
-    )
-    parser.add_argument(
-        "--n-hidden",
-        type=int,
-        default=4,
-        help="num hidden layers",
-    )
-    parser.add_argument(
-        "--output-features", type=int, default=128, help="output features"
-    )
-    parser.add_argument(
-        "--n-fc-layers",
-        type=int,
-        default=1,
-        help="num linear layers at each ff block",
-    )
-    parser.add_argument(
-        "--set-layer",
-        type=str,
-        default="sab",
-        choices=["sab", "ds"],
-        help="set layer",
-    )
-    parser.add_argument(
-        "--n-heads",
-        type=int,
-        default=8,
-        help="number of attention heads",
-    )
-    parser.add_argument(
-        "--statistics-path",
-        type=str,
-        default=None,
-        help="path to dataset statistics",
-    )
-    parser.add_argument("--eval-every", type=int, default=5, help="eval every")
-    parser.add_argument(
-        "--normalize", type=str2bool, default=False, help="normalize data"
-    )
-    parser.add_argument("--do-rate", type=float, default=0.0, help="dropout rate")
-    parser.add_argument(
-        "--add-skip", type=str2bool, default=False, help="add skip connection"
-    )
-    parser.add_argument(
-        "--add-layer-skip",
-        type=str2bool,
-        default=False,
-        help="add per layer skip connection",
-    )
-    parser.add_argument(
-        "--add-bn", type=str2bool, default=True, help="add batch norm layers"
-    )
-    parser.add_argument(
-        "--save-model", type=str2bool, default=False, help="save model artifacts"
-    )
-    parser.add_argument(
-        "--diagonal", type=str2bool, default=True, help="diagonal DWSNet"
-    )
-    parser.add_argument(
-        "--hnp-setup", type=str2bool, default=True, help="HNP vs NP setup"
-    )
-    parser.add_argument(
-        "--sanity", type=str2bool, default=False, help="sanity check using a network and its perm"
-    )
-    parser.add_argument(
-        "--init-scale", type=float, default=1.0, help="scale for weight initialization"
-    )
-    parser.add_argument(
-        "--init-off-diag-scale",
-        type=float,
-        default=1.0,
-        help="scale for weight initialization",
-    )
-    parser.add_argument(
-        "--input-dim-downsample",
-        type=int,
-        default=8,
-        help="input downsampling dimension",
-    )
-    # loss options
-    parser.add_argument(
-        "--recon-loss-weight",
-        type=float,
-        default=1.0,
-        help="Reconstruction loss weight",
-    )
-    parser.add_argument(
-        "--supervised-loss-weight",
-        type=float,
-        default=1.0,
-        help="Reconstruction loss weight",
-    )
-    parser.add_argument(
-        "--n-sink",
-        type=int,
-        default=20,
-        help="Num. Sink steps",
+        batch_size=selected_params.get("batch_size", 7),
+        lr=selected_params.get("lr", 0.001),
+        wd=selected_params.get("wd", 1e-5),
+        image_batch_size=32,
+        loss="ce",
+        recon_loss="both",
+        optim="adamw",
+        num_workers=5,
+        reduction="max",
+        common_reduction="max",
+        dim_hidden=32,
+        n_hidden=4,
+        output_features=128,
+        n_fc_layers=1,
+        set_layer="sab",
+        n_heads=8,
+        statistics_path=None,
+        eval_every=5,
+        normalize=False,
+        do_rate=0.0,
+        add_skip=False,
+        add_layer_skip=False,
+        add_bn=True,
+        save_model=False,
+        diagonal=True,
+        hnp_setup=True,
+        sanity=False,
+        init_scale=1.0,
+        init_off_diag_scale=1.0,
+        input_dim_downsample=8,
+        recon_loss_weight=1.0,
+        supervised_loss_weight=1.0,
+        n_sink=20
     )
 
-    parser.add_argument(
-        "--add_common",
-        type=lambda x: bool(strtobool(x)),
-        nargs="?",
-        const=True,
-        default=False,
-        help="Enable common functionality (default: False). Pass True or False explicitly."
-    )
     args = parser.parse_args()
 
-    # set seed
+    # Set seed
     set_seed(args.seed)
-    # wandb
+
+    # wandb logging
     if args.wandb:
-        name = (
-            f"mlp_cls_trainer_{args.data_name}_lr_{args.lr}_bs_{args.batch_size}_seed_{args.seed}_wd_{args.wd}_add_common_{args.add_common}"
-        )
+        name = f"mlp_cls_trainer_{args.data_name}_lr_{args.lr}_bs_{args.batch_size}_seed_{args.seed}_wd_{args.wd}_add_common_{args.add_common}"
         wandb.init(
             project=args.wandb_project,
             entity=args.wandb_entity,
@@ -655,6 +551,7 @@ if __name__ == "__main__":
     args.data_path = f'{parent_directory}/data/samples/{args.data_name}_models_processed.json'
     args.image_data_path = f'{parent_directory}/data/samples/{args.data_name}_images'
     image_flatten_size = dict(mnist=28 * 28, cifar10=32 * 32 * 3)[args.data_name]
+
     test = main(
         add_common=args.add_common,
         path=args.data_path,

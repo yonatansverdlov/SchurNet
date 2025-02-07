@@ -47,7 +47,7 @@ def generate_splits(data_root, save_path, val_size=1000, test_size=1000, max_mod
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--data_name",type=str,default='cifar',choices=['cifar','mnist'])
+    parser.add_argument("--data_name",type=str,default='cifar10',choices=['cifar10','mnist'])
     args = parser.parse_args()
     data_name = args.data_name
     args.data_root = os.path.join("data/samples", f"{data_name}_models")
