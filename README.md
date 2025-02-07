@@ -51,7 +51,7 @@ To run the MLP experiments, first download the data:
 ```bash
 cd DWS
 mkdir -p data
-wget "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1" -P data/
+wget -O data/cifar_classifiers.zip "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1"
 unzip -q data/cifar_classifiers.zip -d data/samples
 python utils/data_utils/generate_splits.py --data_name cifar
 ```
