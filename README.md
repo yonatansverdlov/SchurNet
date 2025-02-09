@@ -35,7 +35,7 @@ python train_wd.py --dataset_name set_name
 ```
 ## Deep Weight Space Alignment
 ### Data
-Choose `data_name` to be `mnist` or `cifar`.
+Choose `data_name` to be `mnist` or `cifar10`.
 
 ### MNIST MLP
 To run the MLP experiments, first download the data:
@@ -53,7 +53,7 @@ cd DWS
 mkdir -p data
 wget -O data/cifar_classifiers.zip "https://www.dropbox.com/scl/fi/lex7rj1147nhq2hsp83r1/cifar10_mlps.zip?rlkey=tiyq14zl70hjbmhq2y9sg14xo&dl=1"
 unzip -q data/cifar_classifiers.zip -d data/samples
-python utils/data_utils/generate_splits.py --data_name cifar
+python utils/data_utils/generate_splits.py --data_name cifar10
 ```
 ### Training
 For our model with the shared layers run:

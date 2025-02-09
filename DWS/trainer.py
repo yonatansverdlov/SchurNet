@@ -197,7 +197,7 @@ def main(
         pin_memory=True,
     )
     # todo: add image args to argparse
-    get_loaders = dict(mnist=get_mnist_dataloaders, cifar=get_cifar10_dataloaders)[args.data_name]
+    get_loaders = dict(mnist=get_mnist_dataloaders, cifar10=get_cifar10_dataloaders)[args.data_name]
     train_image_loader, val_image_loader, test_image_loader = get_loaders(
         args.image_data_path, batch_size=args.image_batch_size
     )
@@ -475,7 +475,7 @@ if __name__ == "__main__":
     # Use common_parser as in your original code
     parser = ArgumentParser("DEEP-ALIGN MLP matching trainer", parents=[common_parser])
 
-    parser.add_argument("--data_name", type=str, default='mnist', choices=["mnist", "cifar"], help="Dataset to use")
+    parser.add_argument("--data_name", type=str, default='mnist', choices=["mnist", "cifar10"], help="Dataset to use")
     parser.add_argument("--add_common", type=lambda x: bool(strtobool(x)), nargs="?", const=True, default=False, help="Enable common functionality")
 
     # Parse preliminary arguments to determine dataset and add_common setting
@@ -485,8 +485,8 @@ if __name__ == "__main__":
     best_hyperparams = {
         ("mnist", True): {"lr": 0.001, "wd": 5e-05, "batch_size": 8},
         ("mnist", False): {"lr": 0.001, "wd": 1e-05, "batch_size": 8},
-        ("cifar", True): {"lr": 0.0005, "wd": 0.0001, "batch_size": 7},
-        ("cifar", False): {"lr": 0.001, "wd": 0.0001, "batch_size": 7},
+        ("cifar10", True): {"lr": 0.0005, "wd": 0.0001, "batch_size": 7},
+        ("cifar10", False): {"lr": 0.001, "wd": 0.0001, "batch_size": 7},
     }
 
     selected_params = best_hyperparams.get((pre_args.data_name, pre_args.add_common), {})
@@ -550,7 +550,7 @@ if __name__ == "__main__":
     logging.info(f"Using {args.data_name} dataset")
     args.data_path = f'{parent_directory}/data/samples/{args.data_name}_models_processed.json'
     args.image_data_path = f'{parent_directory}/data/samples/{args.data_name}_images'
-    image_flatten_size = dict(mnist=28 * 28, cifar=32 * 32 * 3)[args.data_name]
+    image_flatten_size = dict(mnist=28 * 28, cifar10=32 * 32 * 3)[args.data_name]
 
     test = main(
         add_common=args.add_common,
