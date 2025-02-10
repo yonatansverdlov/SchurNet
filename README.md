@@ -77,5 +77,4 @@ python trainer.py --data_name data_name --add_common False
       primaryClass={cs.LG},
       url={https://arxiv.org/abs/2410.06665}
 }
-
 ```
