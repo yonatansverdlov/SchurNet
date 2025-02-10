@@ -67,13 +67,15 @@ python trainer.py --data_name data_name --add_common False
 
 ## Citation
 ```
-@misc{sverdlov2024revisiting,
+@inproceedings{sverdlov2025revisiting,
       title={Revisiting Multi-Permutation Equivariance through the Lens of Irreducible Representations}, 
       author={Yonatan Sverdlov and Ido Springer and Nadav Dym},
-      year={2024},
+      booktitle={International Conference on Learning Representations (ICLR)},
+      year={2025},
       eprint={2410.06665},
       archivePrefix={arXiv},
       primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2410.06665}, 
+      url={https://arxiv.org/abs/2410.06665}
 }
+
 ```
